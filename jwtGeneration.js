@@ -1,7 +1,7 @@
 const crypto = require('crypto');
 
 async function generateJWT() {
-    const jwtSecret = "16bd0509-b8c1-4ffd-973a-683f07574813";
+    const jwtSecret = process.env.JWT_SECRET;
 
     // Set headers for JWT
     const header = {
@@ -13,7 +13,7 @@ async function generateJWT() {
     const currentTimestamp = Math.floor(Date.now() / 1000);
 
     const data = {
-        iss: "a7cc2052-e911-4de1-aaf3-b89313bd51a9",
+        iss: process.env.JWT_ISSUER,
         iat: currentTimestamp,
         exp: currentTimestamp + 30, // expiry time is 30 seconds from time of creation
         // jti: 'jwt_nonce'

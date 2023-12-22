@@ -22,7 +22,7 @@ const initSocket = (httpServer) => {
         const jwtToken = await generateJWT();
         const headers = {
           Authorization: `Bearer ${jwtToken}`,
-          connection_id: 'a7cc2052-e911-4de1-aaf3-b89313bd51a9',
+          connection_id: process.env.JWT_ISSUER,
         };
   
         const externalApiResponse = await axios.post(
