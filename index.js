@@ -29,6 +29,6 @@ app.post('/webhook', async (req, res) => {
   res.sendStatus(200); // Send a response to acknowledge the request
 });
 
-app.listen(PORT, () => {
+httpServer.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
