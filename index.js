@@ -21,8 +21,10 @@ app.post('/webhook', async (req, res) => {
   io.sockets.emit('serverMessage', req.body, (error) => {
     if (error) {
       console.error('Error during server acknowledgment:', error);
+      console.log(req.body);
     } else {
       console.log('Server acknowledgment received successfully');
+      console.log(req.body);
     }
   });
 
