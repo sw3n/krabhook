@@ -21,13 +21,20 @@ app.post('/webhook', async (req, res) => {
   // Log the number of connected sockets
   console.log('Number of connected sockets:', io.engine.clientsCount);
 
+  const timeoutDuration = 5000; // 5 seconds
+
   io.sockets.emit('serverMessage', req.body, (error) => {
     if (error) {
-      console.error('Error during server acknowledgment:', error);
+      if (error.message === 'timeout') {
+        console.error(`Server acknowledgment timed out after ${timeoutDuration} ms`);
+      } else {
+        console.error('Error during server acknowledgment:', error);
+      }
     } else {
       console.log('Server acknowledgment received successfully');
     }
-  });
+  }).timeout(timeoutDuration);
+  
 
   res.sendStatus(200); // Send a response to acknowledge the request
 });
