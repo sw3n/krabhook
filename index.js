@@ -16,15 +16,16 @@ const httpServer = createServer(app);
 const io = initSocket(httpServer);
 
 app.post('/webhook', async (req, res) => {
+  console.log('Received webhook request:', req.body);
 
-  // Access the connected sockets from the stored io instance
+  // Log the number of connected sockets
+  console.log('Number of connected sockets:', Object.keys(io.sockets.connected).length);
+
   io.sockets.emit('serverMessage', req.body, (error) => {
     if (error) {
       console.error('Error during server acknowledgment:', error);
-      console.log(req.body);
     } else {
       console.log('Server acknowledgment received successfully');
-      console.log(req.body);
     }
   });
 
