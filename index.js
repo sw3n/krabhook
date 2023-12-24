@@ -19,7 +19,7 @@ app.post('/webhook', async (req, res) => {
   console.log('Received webhook request:', req.body);
 
   // Log the number of connected sockets
-  console.log('Number of connected sockets:', io.sockets.connected.length);
+  console.log('Number of connected sockets:', io.engine.clientsCount);
 
   io.sockets.emit('serverMessage', req.body, (error) => {
     if (error) {
