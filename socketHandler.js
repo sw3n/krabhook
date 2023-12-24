@@ -2,7 +2,7 @@ const { Server } = require("socket.io");
 const axios = require('axios');
 const { generateJWT } = require('./jwtGeneration');
 
-const initSocket = (httpServer) => {
+const initSocket = (httpServer, customerSocketMap) => {
   const io = new Server(httpServer, {
     cors: {
       origin: process.env.ALLOWED_ORIGIN,
@@ -17,6 +17,9 @@ const initSocket = (httpServer) => {
     });
 
     socket.on('clientMessage', async (message) => {
+      // Store the customer number and corresponding socket ID in the map
+      customerSocketMap.set(message.customer_id, socket.id);
+
       console.log('Received message from client:', message);
       try {
         const jwtToken = await generateJWT();
@@ -46,6 +49,14 @@ const initSocket = (httpServer) => {
 
     socket.on('disconnect', () => {
       console.log('Client disconnected');
+      // Remove the mapping when a socket disconnects
+      for (const [customerNumber, socketId] of customerSocketMap.entries()) {
+        if (socketId === socket.id) {
+          customerSocketMap.delete(customerNumber);
+          console.log(`Removed mapping for customer ${customerNumber}`);
+          break;
+        }
+      }
     });
   });
 

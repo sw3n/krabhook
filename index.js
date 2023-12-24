@@ -12,23 +12,29 @@ app.use(bodyParser.json());
 
 const httpServer = createServer(app);
 
+// Map to store customer numbers and corresponding socket IDs
+const customerSocketMap = new Map();
+
 // Initialize the WebSocket and store the returned io instance
-const io = initSocket(httpServer);
+const io = initSocket(httpServer, customerSocketMap);
 
 app.post('/webhook', async (req, res) => {
   console.log('Received webhook request:', req.body);
 
-  // Log the number of connected sockets
-  console.log('Number of connected sockets:', io.engine.clientsCount);
+  // Get the socket ID associated with the customer number
+  const socketId = customerSocketMap.get(req.body.customer_id);
 
-  io.sockets.timeout(5000).emit('serverMessage', req.body, (err, response) => {
-    if (err) {
-      console.error('Error during server acknowledgment:', error);
-    } else {
-      console.log('Server acknowledgment received successfully:', response);
-    }
-  });
-
+  if (socketId) {
+    console.log(`Found socket ID ${socketId} for customer ${req.body.customer_id}`);
+    io.to(socketId).timeout(10000).emit('serverMessage', req.body, (error) => {
+      if (error) {
+        console.error('Error during server acknowledgment:', error);
+      } else {
+        console.log('Server acknowledgment received successfully');
+      }
+    });
+  }
+  
   res.sendStatus(200); // Send a response to acknowledge the request
 });
 
