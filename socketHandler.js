@@ -29,7 +29,7 @@ const initSocket = (httpServer, customerSocketMap) => {
         };
   
         const externalApiResponse = await axios.post(
-          'https://incoming.euw1.um.pega.digital/messages',
+          process.env.DMS_URL,
           {
             type: message.type,
             customer_id: message.customer_id,
