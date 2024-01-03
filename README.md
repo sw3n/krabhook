@@ -15,7 +15,7 @@ Webhook and socket support to interact with the LCC (Labb Chat Client) and Pega 
 - Build command should be `yarn`
 - Start command should be `yarn start`
 - Select the `Free` option
-5. Pay special attention to `Environment variables` as explained in Step 5. This can easily be changed when the service is setup and deployed. Once it's changed, the service will automatically restart and the new environment variables will be in place.
+5. Pay special attention to `Environment variables`. This can easily be changed later on when the service is setup and deployed. Once it's changed, the service will automatically restart and the new environment variables will be in place.
 - Key: ALLOWED_ORIGIN - Value of the URL to the LCC (Labb Chat Client)
 - Key: DMS_URL - The value of the URL to Pega DMS as given by Pega when creating the chat DMS service. For example: `https://incoming.euw1.um.pega.digital/messages`
 - Key: JWT_ISSUER - The JWT issuer as given by the the DMS settings in Pega when creating a chat DMS service
@@ -24,7 +24,9 @@ Webhook and socket support to interact with the LCC (Labb Chat Client) and Pega 
 
 # What does it do?
 
-This JavaScript code is part of a server application that uses the Socket.IO library to handle real-time, bidirectional, and event-based communication. It also uses the axios library to make HTTP requests and a custom module named jwtGeneration.
+This JavaScript code is for a server application that uses the Express.js framework, along with several other modules: body-parser, cors, and http. It also imports a custom module named socketHandler.
+
+In socketHandler we use the Socket.IO library to handle real-time, bidirectional, and event-based communication. It also uses the axios library to make HTTP requests and a custom module named jwtGeneration.
 
 The initSocket function is exported from this module. It takes two arguments: an HTTP server and a map of customer numbers to socket IDs.
 
